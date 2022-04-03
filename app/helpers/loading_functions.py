@@ -28,9 +28,9 @@ def get_remote_nested_json(dataurl,depth=2):
     return df
 
 def get_static_simple_json(file):
-    df = pd.read_json("../../datasets/"+file)
+    df = pd.read_json(file)
     return df
 
 def get_static_nested_json(file,depth=2):
-    df = pd.json_normalize("../../datasets/"+file, max_level=depth)
+    df = pd.json_normalize(file, max_level=depth)
     return df

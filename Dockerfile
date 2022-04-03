@@ -140,9 +140,9 @@ RUN fix-permissions /etc/jupyter/
 # Switch back to scd to avoid accidental container runs as root
 
 USER $NB_UID
-WORKDIR $HOME
-COPY --chmod=777 . .
+WORKDIR $HOME/app
+COPY --chmod=777 ./app .
 RUN pip install -r requirements.txt
-VOLUME ["$HOME/datasets","$HOME/bamboolib-notebooks"]
-EXPOSE 8888 8866
-CMD ["./entrypoint.sh"]
+VOLUME ["$HOME/app"]
+EXPOSE 8888
+CMD jupyter notebook --notebook-dir=$HOME/app --ip=0.0.0.0 --no-browser --allow-root --port=8888 --NotebookApp.token='123456' --NotebookApp.base_url='/bamboolib'
