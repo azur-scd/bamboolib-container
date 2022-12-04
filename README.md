@@ -54,8 +54,13 @@ pivot_ui(df)
 #### Misc
 
 beautifulsoup4
+
 lxml
+
+requests
+
 SQLAlchemy
+
 voila
 
 ### Find this image on Docker Hub
