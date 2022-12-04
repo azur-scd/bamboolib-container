@@ -22,13 +22,41 @@ Some adjustments were made in this fork
 - With this configuration, you can customize as wanted the username/UID/GID in the container, especially by choosing a user which matches with yout host user for using volumes.
 - And precisely in this repo, all the /app folder is exposed as volumes in the Dockerfile, to persist data files and custom notebooks storage by mapping the /home/*username*/app folder inside the container (see below). Feel free to change or not use this configuration
 
-### Bamboolib integration
+### Bamboolib Functionalities
 
-The bamboolib free Community Edition doesn't allow the development of custom additionnal data loaders plugins, so the repo contains a pre-filled notebook (/app/main.ipynb) and some helpers functions that extend the features of the bamboolib native dataloader
-- Load CSV and Excel files with BAmboolib loader UI
-- Possibly load local Json files + remote CSV and Json files avalaible from http protocol.
+- Load Packages
+```
+import pandas as pd
+import bamboolib as bam
+```
+
+- Load local CSV and Excel files with native Bamboolib loader UI
+
+```
+bam
+```
 
 ![bamboolib dataloader](/assets/main_notebook_screenshot.png)
+
+### Other installed packages
+
+#### PivotTableJS
+
+See [https://github.com/nicolaskruchten/jupyter_pivottablejs](https://github.com/nicolaskruchten/jupyter_pivottablejs) and examples [here](https://towardsdatascience.com/introducing-pivotui-never-use-pandas-to-groupby-and-pivot-your-data-again-ed0fcf95b6ed)
+
+```
+from pivottablejs import pivot_ui
+...
+pivot_ui(df)
+```
+![PivotUI](/assets/pivot_ui.png)
+
+#### Misc
+
+beautifulsoup4
+lxml
+SQLAlchemy
+voila
 
 ### Find this image on Docker Hub
 

@@ -150,3 +150,6 @@ RUN pip install -r requirements.txt
 VOLUME ["$HOME/app"]
 EXPOSE 8888
 CMD jupyter notebook --notebook-dir=$HOME/app --ip=0.0.0.0 --no-browser --allow-root --port=8888 --NotebookApp.token='123456' --NotebookApp.base_url='/bamboolib'
+
+#docker build --build-arg NB_USER=docker --build-arg NB_UID=1000 --build-arg NB_GID=100 -t azurscd/bamboolib-container .
+#docker run --name bamboolib -d -p 8888:8888 -v C:/Users/geoffroy/Documents/GitHub/bamboolib-container/app:/home/docker/app azurscd/bamboolib-container
