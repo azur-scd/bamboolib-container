@@ -4,8 +4,8 @@
 # Ubuntu 20.04 (focal)
 # https://hub.docker.com/_/ubuntu/?tab=tags&name=focal
 # OS/ARCH: linux/amd64
-#ARG ROOT_CONTAINER=ubuntu:focal-20220113@sha256:7c9c7fed23def3653a0da5bc9ecb651efe155ebd5802c7ba5d585edaa6c89496
-ARG ROOT_CONTAINER=ubuntu:focal-20220316@sha256:dcc176d1ab45d154b767be03c703a35fe0df16cfb1cc7ea5dd3b6f9af99b6718
+ARG ROOT_CONTAINER=ubuntu:focal-20221019@sha256:b25ef49a40b7797937d0d23eca3b0a41701af6757afca23d504d50826f0b37ce
+#ARG ROOT_CONTAINER=ubuntu:focal-20220316@sha256:dcc176d1ab45d154b767be03c703a35fe0df16cfb1cc7ea5dd3b6f9af99b6718
 
 ARG BASE_CONTAINER=$ROOT_CONTAINER
 FROM $BASE_CONTAINER
@@ -77,13 +77,14 @@ ARG PYTHON_VERSION=default
 RUN fix-permissions /home/$NB_USER
 
 # Install conda as scd and check the md5 sum provided on the download site
-ENV MINICONDA_VERSION=4.8.3 \
+ENV MINICONDA_VERSION=4.12.0 \
     MINICONDA_MD5=d63adf39f2c220950a063e0529d4ff74 \
-    CONDA_VERSION=4.8.3
+	MINICONDA_SHA256SUM=3190da6626f86eee8abf1b2fd7a5af492994eb2667357ee4243975cdbb175d7a \
+    CONDA_VERSION=4.12.0
 
 WORKDIR /tmp
 RUN wget --quiet https://repo.continuum.io/miniconda/Miniconda3-py38_${MINICONDA_VERSION}-Linux-x86_64.sh && \
-    echo "${MINICONDA_MD5} *Miniconda3-py38_${MINICONDA_VERSION}-Linux-x86_64.sh" | md5sum -c - && \
+    echo "${MINICONDA_SHA256SUM} *Miniconda3-py38_${MINICONDA_VERSION}-Linux-x86_64.sh" | sha256sum -c - && \
     /bin/bash Miniconda3-py38_${MINICONDA_VERSION}-Linux-x86_64.sh -f -b -p $CONDA_DIR && \
     rm Miniconda3-py38_${MINICONDA_VERSION}-Linux-x86_64.sh && \
     echo "conda ${CONDA_VERSION}" >> $CONDA_DIR/conda-meta/pinned && \
@@ -100,9 +101,11 @@ RUN wget --quiet https://repo.continuum.io/miniconda/Miniconda3-py38_${MINICONDA
     rm -rf /home/$NB_USER/.cache/yarn && \
     fix-permissions $CONDA_DIR && \
     fix-permissions /home/$NB_USER
+	
+RUN pip install tqdm
 
 # Install Tini
-RUN conda install --quiet --yes 'tini=0.18.0' && \
+RUN conda install --quiet --yes 'tini=0.19.0' && \
     conda list tini | grep tini | tr -s ' ' | cut -d ' ' -f 1,2 >> $CONDA_DIR/conda-meta/pinned && \
     conda clean --all -f -y && \
     fix-permissions $CONDA_DIR && \
@@ -114,10 +117,11 @@ RUN conda install --quiet --yes 'tini=0.18.0' && \
 # Correct permissions
 # Do all this in a single RUN command to avoid duplicating all of the
 # files across image layers when the permissions change
+# chek versions on each urls in https://docs.jupyter.org/en/latest/install.html
 RUN conda install --quiet --yes \
-    'notebook=6.4.4' \
-    'jupyterhub=1.1.0' \
-    'jupyterlab=2.1.5' && \
+    'notebook=6.5.2' \
+    'jupyterhub=3.0.0' \
+    'jupyterlab=3.5.0' && \
     conda clean --all -f -y && \
     npm cache clean --force && \
     jupyter notebook --generate-config && \
