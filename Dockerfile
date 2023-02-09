@@ -146,7 +146,7 @@ RUN fix-permissions /etc/jupyter/
 USER $NB_UID
 WORKDIR $HOME/app
 COPY --chmod=777 ./app .
-RUN pip install -r requirements.txt
+RUN pip install --upgrade -r requirements.txt
 VOLUME ["$HOME/app"]
 EXPOSE 8888
 CMD jupyter notebook --notebook-dir=$HOME/app --ip=0.0.0.0 --no-browser --allow-root --port=8888 --NotebookApp.token='123456' --NotebookApp.base_url='/bamboolib'

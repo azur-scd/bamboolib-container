@@ -51,6 +51,10 @@ pivot_ui(df)
 ```
 ![PivotUI](/assets/pivot_ui.png)
 
+#### s3fs
+
+Access for aws like object storage (Minio for example)
+
 #### Misc
 
 beautifulsoup4
